@@ -1,10 +1,13 @@
 #include <list>
+#include <iterator>
 #include <vector>
 #include <algorithm> // random_shuffle
 #include <ctime>     // time
 #include <cstdlib>   // rand, srand
 #include "Partida.h"
 #include "Pedra.h"
+
+#include <iostream>
 
 using namespace std;
 
@@ -54,27 +57,21 @@ void Partida::limparMesa() {
 }
 
 void Partida::iniciarPartida(Jogador p1, Jogador p2, Jogador p3, Jogador p4) {
-    list<Pedra> lista;
     p1.setPontos(0);
     p2.setPontos(0);
     p3.setPontos(0);
     p4.setPontos(0);
-    p1.setPedrasNaMao(lista);
-    p2.setPedrasNaMao(lista);
-    p3.setPedrasNaMao(lista);
-    p4.setPedrasNaMao(lista);
     setJogador(1, p1);
     setJogador(2, p2);
     setJogador(3, p3);
     setJogador(4, p4);
 }
 
-// distribuir pedras
 // contar_garagem
-// encontrar6x6
-// checarMaoDoJogador verificar se não está vazia
+// encontrarPedra
 // proximoTurno
-// colocarPedraNaMesa
+
+// Verificar se não há repetição das pedras do embaralhamento
 list<Pedra> Partida::criarPedras() {
     list<Pedra> pedras;
     Pedra pedra;
@@ -92,6 +89,49 @@ list<Pedra> Partida::criarPedras() {
     return pedras;
 }
 
+void Partida::distribuirPedras() {
+    list<Pedra> pedras;
+    list<Pedra>::iterator fim;    
+    list<Pedra> mao1;
+    list<Pedra> mao2;
+    list<Pedra> mao3;
+    list<Pedra> mao4;
+
+    pedras = criarPedras();
+
+    for(fim = pedras.end(); fim != pedras.begin(); fim--) {
+        mao1.push_back(*fim);
+        fim--;
+        mao2.push_back(*fim);
+        fim--;
+        mao3.push_back(*fim);
+        fim--;
+        mao4.push_back(*fim);
+    }
+
+    jogador1.setPedrasNaMao(mao1);
+    jogador2.setPedrasNaMao(mao2);
+    jogador3.setPedrasNaMao(mao3);
+    jogador4.setPedrasNaMao(mao4);
+}    
+
+bool Partida::checarMaoDoJogadorEstaVazia(int index) {
+    switch (index) {
+        case 1:
+            return jogador1.getPedrasNaMao().empty();
+            break;
+        case 2:
+            return jogador2.getPedrasNaMao().empty();
+            break;
+        case 3:
+            return jogador3.getPedrasNaMao().empty();
+            break;
+        case 4:
+            return jogador4.getPedrasNaMao().empty();
+    }   
+}
+
 main() {
-    
+    Partida p1;
+    p1.distribuirPedras();
 }

@@ -20,5 +20,7 @@ class Partida {
         Jogador getJogador(int index);
         void limparMesa();
         void iniciarPartida(Jogador p1, Jogador p2, Jogador p3, Jogador p4);
+        void distribuirPedras();
+        bool checarMaoDoJogadorEstaVazia(int index);
 };
 #endif

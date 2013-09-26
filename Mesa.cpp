@@ -36,6 +36,22 @@ Pedra Mesa::pedraDaPonta(int index) {
             return ponta4.back();
     }
 }
+
+void Mesa::colocarPedraNaPonta(int index, Pedra p) {
+    switch(index) {
+        case 1:
+            ponta1.push_back(p);
+            break;
+        case 2:
+            ponta2.push_back(p);
+            break;
+        case 3:
+            ponta3.push_back(p);
+            break;
+        case 4:
+            ponta4.push_back(p);
+    }
+}
 // checarPontosNaMesa
 // colocarPedraNaMesa
 /*Teste: Testa a criação de uma pedra e da ponta de uma mesa main () {Pedra pedra1;

@@ -28,3 +28,12 @@ string Jogador::getNome(){
 list<Pedra> Jogador::getPedrasNaMao(){
     return pedrasNaMao;
 }
+
+int Jogador::garagem() {
+	list<Pedra>::iterator pedra;
+	int pontos = 0;
+	for(pedra = pedrasNaMao.begin(); pedra!=pedrasNaMao.end(); pedra++) {
+		pontos += (*pedra).pontosNaPedra();
+	}
+	return pontos;
+}

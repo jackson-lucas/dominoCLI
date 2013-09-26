@@ -17,6 +17,7 @@ class Jogador {
         int getPontos();
         string getNome();
         list<Pedra> getPedrasNaMao();
+        int garagem();
 };
 
 #endif

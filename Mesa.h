@@ -11,6 +11,7 @@ class Mesa {
     public:
         void setPonta(int index, list<Pedra> lista);
         Pedra pedraDaPonta(int index);
+        void colocarPedraNaPonta(int index, Pedra p);
 };
 #endif
 
