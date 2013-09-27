@@ -3,6 +3,7 @@
 #include "Mesa.h"
 #include "Jogador.h"
 #include "Pedra.h"
+#include <string>
 
 using namespace std;
 
@@ -15,12 +16,24 @@ class Partida {
     Mesa mesa;
     int algoritmo_randomico (int i);
     list<Pedra> criarPedras();
+    void mostrarTurno();
     public:
         void setJogador(int index, Jogador p1);
         Jogador getJogador(int index);
         void limparMesa();
-        void iniciarPartida(Jogador p1, Jogador p2, Jogador p3, Jogador p4);
         void distribuirPedras();
         bool checarMaoDoJogadorEstaVazia(int index);
+        bool temPalavrasReservadas(string nome);
+        void iniciar();
+        void mostrarPlacar();
+        bool terminouJogo();
+        int garagemParaJogador(int index);
+        void jogadaInvalida();
+        bool validarJogada(string movimento, Pedra pedra);
+        void finalizar();
+        void encontrar6x6();
+        void mostrarMao();
+        void aguardarMovimento(string movimento);
+        bool vaiPassar(int index);
 };
 #endif

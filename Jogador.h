@@ -18,6 +18,8 @@ class Jogador {
         string getNome();
         list<Pedra> getPedrasNaMao();
         int garagem();
+        bool existePedraNaMao(Pedra pedraEscolhida);
+        bool removerPedraNaMao(Pedra pedraParaRemover);
 };
 
 #endif
