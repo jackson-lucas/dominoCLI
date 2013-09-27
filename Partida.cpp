@@ -8,7 +8,7 @@
 #include "Pedra.h"
 #include <string>
 #include <iostream>
-#include <array>
+//#include <array>
 
 using namespace std;
 
@@ -144,7 +144,7 @@ void Partida::encontrar6x6() {
 
 }
 
-bool Partida::temPalavrasReservadas(string nome) {
+/*bool Partida::temPalavrasReservadas(string nome) {
     array<string,6> palavrasReservadas = {"placar", "jogar", "mesa", "mao", "turno", "ajuda"};
     for(int i=0; i<6; i++) {
         if(nome.find(palavrasReservadas[i]) != -1) {
@@ -152,7 +152,7 @@ bool Partida::temPalavrasReservadas(string nome) {
         }
     }
     return false;
-}
+}*/
 
 void Partida::iniciar() {
     // Modo teste, os nomes não estão sendo escolhido pelos usuarios
@@ -164,8 +164,8 @@ void Partida::iniciar() {
     jogador2.setNome(nome2); 
     jogador3.setNome(nome3); 
     jogador4.setNome(nome4);
-    if((!temPalavrasReservadas(nome1)) and (!temPalavrasReservadas(nome2)) and (!temPalavrasReservadas(nome3))
-        and (!temPalavrasReservadas(nome4))) {
+    /*if((!temPalavrasReservadas(nome1)) and (!temPalavrasReservadas(nome2)) and (!temPalavrasReservadas(nome3))
+        and (!temPalavrasReservadas(nome4))) {*/
         cout << endl << "Partida acaba de iniciar" << endl;
         jogador1.setPontos(0);
         jogador2.setPontos(0);
@@ -177,12 +177,12 @@ void Partida::iniciar() {
         distribuirPedras();
         encontrar6x6();
         inicioComSena = true;
-    } else {
+    /*} else {
         cout << "Nome de algum(ns) jogador(es) utiliza(m) alguma(s) palavra(s) reservada(s)" << endl;
         cout << "placar, jogar, mesa, mao, turno, ajuda são palavras reservadas!" << endl;
         cout << "Partida cancelada!" << endl;
         exit(1);
-    }
+    }*/
     
 }
 
