@@ -12,6 +12,7 @@ class Partida {
     Jogador jogador2;
     Jogador jogador3;
     Jogador jogador4;
+    bool inicioComSena;
     int turno;
     Mesa mesa;
     int algoritmo_randomico (int i);

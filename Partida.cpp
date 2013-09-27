@@ -178,6 +178,7 @@ void Partida::iniciar() {
         cout << "Quem tiver a maior carroça inicie o jogo" << endl;
         distribuirPedras();
         encontrar6x6();
+        inicioComSena = true;
     } else {
         cout << "Nome de algum(ns) jogador(es) utiliza(m) alguma(s) palavra(s) reservada(s)" << endl;
         cout << "placar, jogar, mesa, mao, turno, ajuda são palavras reservadas!" << endl;
@@ -196,16 +197,68 @@ void Partida::mostrarPlacar() {
 }
 
 bool Partida::terminouJogo() {
-    if(jogador1.getPontos() > 50) {
-        return true;
+    int quantosAtingiramPontuacao = 0;
+    int pontos1, pontos2, pontos3, pontos4;
+    pontos1 = jogador1.getPontos();
+    pontos2 = jogador2.getPontos();
+    pontos3 = jogador3.getPontos();
+    pontos4 = jogador4.getPontos();
+    
+    if(pontos1 > 50) {
+        quantosAtingiramPontuacao++;
     }
-    if(jogador2.getPontos() > 50) {
-        return true;
+    if(pontos2 > 50) {
+        quantosAtingiramPontuacao++;
     }
-    if(jogador3.getPontos() > 50) {
-        return true;
+    if(pontos3 > 50) {
+        quantosAtingiramPontuacao++;
     }
-    if(jogador4.getPontos() > 50) {
+    if(pontos4 > 50) {
+        quantosAtingiramPontuacao++;
+    }
+    // Se somente um conseguiu terminar jogo, caso contrário verificação se vai ter desempate
+    if(quantosAtingiramPontuacao == 1) {
+        return true;
+    } else if(pontos1 > pontos2) {
+    // Qual o maior entre os quatro
+        if(pontos1 > pontos3) {
+            if(pontos1 > pontos4) {
+                return true;
+            } else if (pontos4 > pontos1) {
+                return true;
+            }
+        } else if (pontos3 > pontos1) {
+            if(pontos3 > pontos4) {
+                return true;
+            } else if (pontos4 > pontos3) {
+                return true;
+            }
+        } else if (pontos4 > pontos3) {
+            return true;
+        }
+    } else if (pontos2 > pontos1) {
+        if(pontos2 > pontos3) {
+            if(pontos2 > pontos4) {
+                return true;
+            } else if (pontos4 > pontos2) {
+                return true;
+            }
+        } else if(pontos3 > pontos2) {
+            if(pontos3 > pontos4) {
+                return true;
+            } else if (pontos4 > pontos3) {
+                return true;
+            }
+        } else if (pontos4 > pontos3) {
+            return true;
+        }
+    } else if(pontos3 > pontos2) {
+        if(pontos3 > pontos4) {
+            return true;
+        } else if (pontos4 > pontos3) {
+            return true;
+        }
+    } else if (pontos4 > pontos2) {
         return true;
     }
     return false;
@@ -242,7 +295,7 @@ void Partida::finalizar() {
 void Partida::mostrarMao() {
     list<Pedra> mao;
     list<Pedra>::iterator pedra;
-    switch (1) {
+    switch (turno) {
         case 1:
             mao = jogador1.getPedrasNaMao();
             cout << jogador1.getNome() << ": [";
@@ -250,7 +303,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            //break;
+            break;
         case 2:
             mao = jogador2.getPedrasNaMao();
             cout << jogador2.getNome() << ": [";
@@ -258,7 +311,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            //break;
+            break;
         case 3:
             mao = jogador3.getPedrasNaMao();
             cout << jogador3.getNome() << ": [";
@@ -266,7 +319,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            //break;
+            break;
         case 4:
             mao = jogador4.getPedrasNaMao();
             cout << jogador4.getNome() << ": [";
@@ -283,15 +336,25 @@ bool Partida::validarJogada(string movimento, Pedra pedra) {
     if (pedra.getNaipe(1) >= 0 and pedra.getNaipe(1) <= 6 and pedra.getNaipe(2) >= 0 and pedra.getNaipe(2) <= 6) {
         if (movimento.find(jogadorDaVez.getNome()) != -1) {
             if(jogadorDaVez.existePedraNaMao(pedra)) {
-                if(mesa.colocarPedraNaMesa(pedra)) {
-                    mostrarMao();
+                if(inicioComSena) {
+                    if ((pedra.getNaipe(1) == 6) and (pedra.getNaipe(2) == 6)) {
+                        if(mesa.colocarPedraNaMesa(pedra)) {
+                            jogadorDaVez.removerPedraNaMao(pedra);
+                            pontos = mesa.pontosNaMesa();
+                            if(pontos % 5 == 0) {
+                                jogadorDaVez.setPontos(pontos + jogadorDaVez.getPontos());
+                            }
+                            setJogador(turno, jogadorDaVez);
+                            return true;
+                        }
+                    }
+                } else if(mesa.colocarPedraNaMesa(pedra)) {
                     jogadorDaVez.removerPedraNaMao(pedra);
                     pontos = mesa.pontosNaMesa();
                     if(pontos % 5 == 0) {
                         jogadorDaVez.setPontos(pontos + jogadorDaVez.getPontos());
                     }
                     setJogador(turno, jogadorDaVez);
-                    mostrarMao();
                     return true;
                 }
             }
@@ -315,6 +378,7 @@ bool Partida::vaiPassar(int index) {
             }
         }
     }
+    cout << jogadorDaVez.getNome() << " não tem pedra, o passe é contado automaticamente" << endl;
     return true;
 }
 
@@ -353,6 +417,9 @@ void Partida::aguardarMovimento(string movimento) {
                     turnoAnterior = turno;
                     // Verificação se o jogador vai passar
                     do {
+                        if(inicioComSena) {
+                            inicioComSena = false;
+                        }
                         if (turno < 4) {
                             turno++;
                         } else {
@@ -370,11 +437,23 @@ void Partida::aguardarMovimento(string movimento) {
                                 setJogador(turnoAnterior, jogadorDaVez);
                             } else if(turnoAnterior == turno) {
                                 // Jogo 'fechado'
+                                // Nesse momento a garagem ficará com quem fechou, nova rodada começará caso a pontuação não tenha sido alcançada
+                                // Nova rodada começará com quem tiver a carroça de 6
                                 jogadorDaVez.setPontos(jogadorDaVez.getPontos() - 50);
                                 setJogador(turnoAnterior, jogadorDaVez);
-                                cout << "Jogo Fechado Não é possível ninguem jogar" << endl;
-                                // TODO: Tratar o jogo fechado corretamente, verificando a garagem, dando pontuação e iniciando nova rodada
-                                exit(1);
+                                cout << "Jogo Fechado não é possível ninguem jogar" << endl;
+                                cout << "Como " << jogadorDaVez.getNome() << "foi quem fechou, ele fica com a garagem!" << endl;
+                                jogadorDaVez.setPontos(garagemParaJogador(turno) + jogadorDaVez.getPontos());
+                                setJogador(turno, jogadorDaVez);
+                                if(terminouJogo()) {
+                                    finalizar();
+                                }
+                                distribuirPedras();
+                                encontrar6x6();
+                                limparMesa();
+                                inicioComSena = true;
+                                cout << "Nova rodada!" << endl;
+                                break;
                             }
                         }
                     } while(passar);
@@ -398,10 +477,6 @@ void Partida::aguardarMovimento(string movimento) {
         }
     }
 }
-// Mostrar claramente que um jogador passou a sua vez por não ter pedra
-// Falta jogar outra rodada para critério de desempate
-// Falta dar a possibilidade do jogador escolher qual ponta ele deseja jogar
-// Ainda não é possível jogar para quando o jogo 'fechar'
 /*
 main() {
     Partida p1;

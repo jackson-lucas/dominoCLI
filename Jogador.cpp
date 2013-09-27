@@ -55,15 +55,12 @@ bool Jogador::removerPedraNaMao(Pedra pedraParaRemover) {
     list<Pedra>::iterator pedra;
     for(pedra = pedrasNaMao.begin(); pedra!=pedrasNaMao.end(); pedra++) {
         if (((*pedra).getNaipe(1) == pedraParaRemover.getNaipe(1)) and ((*pedra).getNaipe(2) == pedraParaRemover.getNaipe(2))) {
-            cout << "removendo (" << (*pedra).getNaipe(1) << "," << (*pedra).getNaipe(2) << ")" << endl;
         	pedra = pedrasNaMao.erase(pedra);
             return true;
         } else if (((*pedra).getNaipe(1) == pedraParaRemover.getNaipe(2)) and ((*pedra).getNaipe(2) == pedraParaRemover.getNaipe(1))) {
-            cout << "removendo (" << (*pedra).getNaipe(1) << "," << (*pedra).getNaipe(2) << ")" << endl;
             pedra = pedrasNaMao.erase(pedra);
             return true;
         }
     }
-    cout << "nenhuma pedra removida" << endl;
     return false;
 }

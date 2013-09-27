@@ -71,9 +71,11 @@ void Mesa::colocarPedraNaPonta(int index, Pedra p) {
 
 bool Mesa::colocarPedraNaMesa(Pedra p) {
     Pedra pedraNaPonta;
-    int n1, n2;
+    int n1, n2, pontaEscolhida;
+    list<int> pontasDisponiveis;
+    list<int>::iterator ponta;
     list<Pedra> lista;
-    if(ponta1.empty() and ponta2.empty() and ponta3.empty() and ponta4.empty() and p.getNaipe(1) == 6 and p.getNaipe(2) == 6) {
+    if(ponta1.empty() and ponta2.empty() and ponta3.empty() and ponta4.empty() and p.getNaipe(1) == p.getNaipe(2)) {
         lista.push_back(p);
         setPonta(1, lista);
         setPonta(2, lista);
@@ -84,13 +86,40 @@ bool Mesa::colocarPedraNaMesa(Pedra p) {
         for(int i=1; i<5; i++) {
             pedraNaPonta = pedraDaPonta(i);
             if(pedraNaPonta.getNaipe(1)== p.getNaipe(2)) {
-                colocarPedraNaPonta(i, p);
+                pontasDisponiveis.push_back(i);
+            } else if (pedraNaPonta.getNaipe(1) == p.getNaipe(1)) {
+                pontasDisponiveis.push_back(i);
+            }
+        }
+        // Caso haja mais de uma opção o jogador pode optar em que ponta vai jogar
+        if(pontasDisponiveis.size() > 1) {
+            cout << "Escolha uma das pontas a seguir para jogar:" << endl;
+            for(ponta = pontasDisponiveis.begin(); ponta!=pontasDisponiveis.end(); ponta++) {
+                cout <<  " " << *ponta;
+            }
+            cout << endl;
+            cin >> pontaEscolhida;
+            pedraNaPonta = pedraDaPonta(pontaEscolhida);
+            if(pedraNaPonta.getNaipe(1)== p.getNaipe(2)) {
+                colocarPedraNaPonta(pontaEscolhida, p);
                 return true;
             } else if (pedraNaPonta.getNaipe(1) == p.getNaipe(1)) {
                 n1 = p.getNaipe(1);
                 n2 = p.getNaipe(2);
                 p.setNaipes(n2, n1);
-                colocarPedraNaPonta(i, p);
+                colocarPedraNaPonta(pontaEscolhida, p);
+                return true;
+            }
+        } else if (pontasDisponiveis.size() == 1) {
+            pedraNaPonta = pedraDaPonta(pontasDisponiveis.front());
+            if(pedraNaPonta.getNaipe(1)== p.getNaipe(2)) {
+                colocarPedraNaPonta(pontaEscolhida, p);
+                return true;
+            } else if (pedraNaPonta.getNaipe(1) == p.getNaipe(1)) {
+                n1 = p.getNaipe(1);
+                n2 = p.getNaipe(2);
+                p.setNaipes(n2, n1);
+                colocarPedraNaPonta(pontaEscolhida, p);
                 return true;
             }
         }
