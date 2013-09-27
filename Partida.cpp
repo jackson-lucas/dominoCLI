@@ -400,6 +400,7 @@ void Partida::aguardarMovimento(string movimento) {
     } else if(movimento.find("ajuda") != -1) {
         cout << "Para mostrar o placar do jogo, digite: placar" << endl;
         cout << "Para mostrar a mesa, digite: mesa" << endl;
+        cout << "Para saber de quem é a vez, digite: turno" << endl;
         cout << "Para ver a mao do jogador que está na vez, digite: mao" << endl;
         cout << "Para jogar, digite: jogar <nome do jogador> <pedra>. Exemplo: jogar " << jogadorDaVez.getNome() << " (3,3)" << endl;
         cout << "Se a jogada for válida a mesa e a pontuação atualizadas serão mostradas, caso contrário será alertado que se trata de uma jogada inválida!"<< endl;
