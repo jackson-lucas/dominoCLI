@@ -18,23 +18,23 @@ class Partida {
     int algoritmo_randomico (int i);
     list<Pedra> criarPedras();
     void mostrarTurno();
+    void setJogador(int index, Jogador p1);
+    Jogador getJogador(int index);
+    void limparMesa();
+    void distribuirPedras();
+    bool checarMaoDoJogadorEstaVazia(int index);
+    bool temPalavrasReservadas(string nome);
+    void mostrarPlacar();
+    bool terminouJogo();
+    int garagemParaJogador(int index);
+    void jogadaInvalida();
+    bool validarJogada(string movimento, Pedra pedra);
+    void finalizar();
+    void encontrar6x6();
+    void mostrarMao();
+    bool vaiPassar(int index);
     public:
-        void setJogador(int index, Jogador p1);
-        Jogador getJogador(int index);
-        void limparMesa();
-        void distribuirPedras();
-        bool checarMaoDoJogadorEstaVazia(int index);
-        bool temPalavrasReservadas(string nome);
         void iniciar();
-        void mostrarPlacar();
-        bool terminouJogo();
-        int garagemParaJogador(int index);
-        void jogadaInvalida();
-        bool validarJogada(string movimento, Pedra pedra);
-        void finalizar();
-        void encontrar6x6();
-        void mostrarMao();
         void aguardarMovimento(string movimento);
-        bool vaiPassar(int index);
 };
 #endif
