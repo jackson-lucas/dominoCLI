@@ -157,18 +157,16 @@ bool Partida::temPalavrasReservadas(string nome) {
 void Partida::iniciar() {
     // Modo teste, os nomes não estão sendo escolhido pelos usuarios
     string nome1, nome2, nome3, nome4;
-    //cin >> nome1 >> nome2 >> nome3 >> nome4; 
-    cout << endl << "Partida acaba de iniciar" << endl;
-    jogador1.setNome("j"); 
-    jogador2.setNome("k"); 
-    jogador3.setNome("l"); 
-    jogador4.setNome("m");
-    //jogador1.setNome(nome1); 
-    //jogador2.setNome(nome2); 
-    //jogador3.setNome(nome3); 
-    //jogador4.setNome(nome4);
+    cout << "Insira o nome dos 4 jogadores que jogarão Dominó por Linha de Comando xD" << endl;
+    cout << "Exemplo: Pimpão Adelícia Queiroga Timótio" << endl;
+    cin >> nome1 >> nome2 >> nome3 >> nome4; 
+    jogador1.setNome(nome1); 
+    jogador2.setNome(nome2); 
+    jogador3.setNome(nome3); 
+    jogador4.setNome(nome4);
     if((!temPalavrasReservadas(nome1)) and (!temPalavrasReservadas(nome2)) and (!temPalavrasReservadas(nome3))
         and (!temPalavrasReservadas(nome4))) {
+        cout << endl << "Partida acaba de iniciar" << endl;
         jogador1.setPontos(0);
         jogador2.setPontos(0);
         jogador3.setPontos(0);
@@ -405,6 +403,7 @@ void Partida::aguardarMovimento(string movimento) {
         cout << "Para ver a mao do jogador que está na vez, digite: mao" << endl;
         cout << "Para jogar, digite: jogar <nome do jogador> <pedra>. Exemplo: jogar " << jogadorDaVez.getNome() << " (3,3)" << endl;
         cout << "Se a jogada for válida a mesa e a pontuação atualizadas serão mostradas, caso contrário será alertado que se trata de uma jogada inválida!"<< endl;
+        cout << "Caso a sua jogada tenha mais de uma ponta em que a pedra possa ser colocada, " << endl << "será perguntado em qual ponta você quer colocar, apenas digite o número correspondente a ponta."<< endl;
     } else if (movimento.find("jogar") != -1) {
         // Caso se deseje jogar, vai verificar se foi jogado alguma pedra e se a mesma é válida
         index = movimento.find("(");
@@ -477,9 +476,3 @@ void Partida::aguardarMovimento(string movimento) {
         }
     }
 }
-/*
-main() {
-    Partida p1;
-    p1.iniciar();   
-    p1.mostrarPlacar();
-}*/
