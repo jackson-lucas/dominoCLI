@@ -36,6 +36,7 @@ int Jogador::garagem() {
 	for(pedra = pedrasNaMao.begin(); pedra!=pedrasNaMao.end(); pedra++) {
 		pontos += (*pedra).pontosNaPedra();
 	}
+    cout << "garagem: " << pontos << endl;
 	return pontos;
 }
 
@@ -45,6 +46,16 @@ bool Jogador::existePedraNaMao(Pedra pedraEscolhida) {
         if (((*pedra).getNaipe(1) == pedraEscolhida.getNaipe(1)) and ((*pedra).getNaipe(2) == pedraEscolhida.getNaipe(2))) {
             return true;
         } else if(((*pedra).getNaipe(2) == pedraEscolhida.getNaipe(1)) and ((*pedra).getNaipe(1) == pedraEscolhida.getNaipe(2))) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Jogador::temCarrocaNaMao() {
+    list<Pedra>::iterator pedra;
+    for(pedra = pedrasNaMao.begin(); pedra!=pedrasNaMao.end(); pedra++) {
+        if ((*pedra).getNaipe(1) == (*pedra).getNaipe(2)) {
             return true;
         }
     }

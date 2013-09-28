@@ -91,6 +91,7 @@ bool Mesa::colocarPedraNaMesa(Pedra p) {
                 pontasDisponiveis.push_back(i);
             }
         }
+        cout << "Pontas disponiveis: " << pontasDisponiveis.size() << endl;
         // Caso haja mais de uma opção o jogador pode optar em que ponta vai jogar
         if(pontasDisponiveis.size() > 1) {
             cout << "Escolha uma das pontas a seguir para jogar:" << endl;
@@ -111,7 +112,8 @@ bool Mesa::colocarPedraNaMesa(Pedra p) {
                 return true;
             }
         } else if (pontasDisponiveis.size() == 1) {
-            pedraNaPonta = pedraDaPonta(pontasDisponiveis.front());
+            pontaEscolhida = pontasDisponiveis.front();
+            pedraNaPonta = pedraDaPonta(pontaEscolhida);
             if(pedraNaPonta.getNaipe(1)== p.getNaipe(2)) {
                 colocarPedraNaPonta(pontaEscolhida, p);
                 return true;

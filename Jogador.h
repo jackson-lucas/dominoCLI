@@ -19,6 +19,7 @@ class Jogador {
         list<Pedra> getPedrasNaMao();
         int garagem();
         bool existePedraNaMao(Pedra pedraEscolhida);
+        bool temCarrocaNaMao();
         bool removerPedraNaMao(Pedra pedraParaRemover);
 };
 

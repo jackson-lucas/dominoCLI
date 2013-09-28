@@ -58,7 +58,7 @@ void Partida::limparMesa() {
 }
 
 void Partida::mostrarTurno() {
-    cout << "Turno: " << turno << " É a vez do jogador: "<< getJogador(turno).getNome() << endl;
+    cout << "Turno: " << turno << ", É a vez do jogador: "<< getJogador(turno).getNome() << endl;
 }
 
 // Verificar se não há repetição das pedras do embaralhamento
@@ -201,17 +201,16 @@ bool Partida::terminouJogo() {
     pontos2 = jogador2.getPontos();
     pontos3 = jogador3.getPontos();
     pontos4 = jogador4.getPontos();
-    
-    if(pontos1 > 50) {
+    if(pontos1 >= 50) {
         quantosAtingiramPontuacao++;
     }
-    if(pontos2 > 50) {
+    if(pontos2 >= 50) {
         quantosAtingiramPontuacao++;
     }
-    if(pontos3 > 50) {
+    if(pontos3 >= 50) {
         quantosAtingiramPontuacao++;
     }
-    if(pontos4 > 50) {
+    if(pontos4 >= 50) {
         quantosAtingiramPontuacao++;
     }
     // Se somente um conseguiu terminar jogo, caso contrário verificação se vai ter desempate
@@ -276,8 +275,28 @@ int Partida::garagemParaJogador(int index) {
     if(index != 4) {
         garagem += jogador4.garagem();    
     }
+    cout << "garagem total antes: " << garagem << endl;
     for(; garagem%5!=0; garagem--);
+    cout << "garagem total: " << garagem << endl;
     return garagem;
+}
+
+// Situação para quando o jogo fechar: O jogador que tiver a menor garagem será o jogador que terá a maior Garagem
+// Com esse princípio, a função procura quem vai ter maior Garagem e coloca esse pontos para o jogador.
+void Partida::maiorGaragem() {
+    int maiorGaragem, garagem, index = 1;
+    Jogador jogador;
+    maiorGaragem = garagemParaJogador(index);
+    for(int i = 2; i < 5; i++) {
+        garagem = garagemParaJogador(i);
+        if (garagem > maiorGaragem) {
+            maiorGaragem = garagem;
+            index = i;
+        }
+    }
+    jogador = getJogador(index);
+    jogador.setPontos(jogador.getPontos() + maiorGaragem);
+    setJogador(index, jogador);
 }
 
 void Partida::jogadaInvalida() {
@@ -293,7 +312,7 @@ void Partida::finalizar() {
 void Partida::mostrarMao() {
     list<Pedra> mao;
     list<Pedra>::iterator pedra;
-    switch (turno) {
+    switch (1) {
         case 1:
             mao = jogador1.getPedrasNaMao();
             cout << jogador1.getNome() << ": [";
@@ -301,7 +320,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            break;
+            //break;
         case 2:
             mao = jogador2.getPedrasNaMao();
             cout << jogador2.getNome() << ": [";
@@ -309,7 +328,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            break;
+            //break;
         case 3:
             mao = jogador3.getPedrasNaMao();
             cout << jogador3.getNome() << ": [";
@@ -317,7 +336,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            break;
+            //break;
         case 4:
             mao = jogador4.getPedrasNaMao();
             cout << jogador4.getNome() << ": [";
@@ -427,24 +446,28 @@ void Partida::aguardarMovimento(string movimento) {
                         }
                         passar = vaiPassar(turno);
                         if(passar) {
+                            // Bug Corrigido: Quando tinha um passe o jogador tinha sua mao sobrescrita, com isso não perdendo 
+                            // a pedra jogada, para solucionar jogadorDaVez recebe novamente o jogador do turno, para atualizar a mao
                             if(((turno - turnoAnterior) == 1) or (turnoAnterior == 4 and turno == 1)) {
                                 // continua sendo o jogador que acabou de jogar
+                                jogadorDaVez = getJogador(turnoAnterior);
                                 jogadorDaVez.setPontos(20 + jogadorDaVez.getPontos());
                                 setJogador(turnoAnterior, jogadorDaVez);
                             } else if((turnoAnterior - turno == 1) or (turnoAnterior == 1 and turno == 4)) {
                                 // Caracteriza 50 pontos
+                                jogadorDaVez = getJogador(turnoAnterior);
                                 jogadorDaVez.setPontos(30 + jogadorDaVez.getPontos());
                                 setJogador(turnoAnterior, jogadorDaVez);
                             } else if(turnoAnterior == turno) {
                                 // Jogo 'fechado'
                                 // Nesse momento a garagem ficará com quem fechou, nova rodada começará caso a pontuação não tenha sido alcançada
                                 // Nova rodada começará com quem tiver a carroça de 6
+                                jogadorDaVez = getJogador(turnoAnterior);
                                 jogadorDaVez.setPontos(jogadorDaVez.getPontos() - 50);
                                 setJogador(turnoAnterior, jogadorDaVez);
                                 cout << "Jogo Fechado não é possível ninguem jogar" << endl;
-                                cout << "Como " << jogadorDaVez.getNome() << "foi quem fechou, ele fica com a garagem!" << endl;
-                                jogadorDaVez.setPontos(garagemParaJogador(turno) + jogadorDaVez.getPontos());
-                                setJogador(turno, jogadorDaVez);
+                                cout << "Quem tem a menor pontuação em mãos receberá a garagem dos outros jogadores" << endl;
+                                maiorGaragem();
                                 if(terminouJogo()) {
                                     finalizar();
                                 }
@@ -469,6 +492,12 @@ void Partida::aguardarMovimento(string movimento) {
                         distribuirPedras();
                         limparMesa();
                         cout << "Nova rodada!" << endl;
+                        // Verifica se o jogador tem carroça para começar uma rodada
+                        while(!jogadorDaVez.temCarrocaNaMao()) {
+                            cout << jogadorDaVez.getNome() << " passou por não ter carroça. Placar continua o mesmo." << endl;
+                            turno++;
+                            jogadorDaVez = getJogador(turno);
+                        }
                     }
                 }
                 mostrarPlacar();
@@ -477,3 +506,5 @@ void Partida::aguardarMovimento(string movimento) {
         }
     }
 }
+
+// Garagem contagem errado e finalização do jogo pré-matura

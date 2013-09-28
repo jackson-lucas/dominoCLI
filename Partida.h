@@ -16,10 +16,10 @@ class Partida {
     int turno;
     Mesa mesa;
     int algoritmo_randomico (int i);
-    list<Pedra> criarPedras();
-    void mostrarTurno();
     void setJogador(int index, Jogador p1);
     Jogador getJogador(int index);
+    list<Pedra> criarPedras();
+    void mostrarTurno();
     void limparMesa();
     void distribuirPedras();
     bool checarMaoDoJogadorEstaVazia(int index);
@@ -27,6 +27,7 @@ class Partida {
     void mostrarPlacar();
     bool terminouJogo();
     int garagemParaJogador(int index);
+    void maiorGaragem();
     void jogadaInvalida();
     bool validarJogada(string movimento, Pedra pedra);
     void finalizar();
