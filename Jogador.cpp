@@ -36,7 +36,6 @@ int Jogador::garagem() {
 	for(pedra = pedrasNaMao.begin(); pedra!=pedrasNaMao.end(); pedra++) {
 		pontos += (*pedra).pontosNaPedra();
 	}
-    cout << "garagem: " << pontos << endl;
 	return pontos;
 }
 

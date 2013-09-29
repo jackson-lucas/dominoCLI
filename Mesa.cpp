@@ -75,6 +75,7 @@ bool Mesa::colocarPedraNaMesa(Pedra p) {
     list<int> pontasDisponiveis;
     list<int>::iterator ponta;
     list<Pedra> lista;
+    bool pontaInvalida = true;
     if(ponta1.empty() and ponta2.empty() and ponta3.empty() and ponta4.empty() and p.getNaipe(1) == p.getNaipe(2)) {
         lista.push_back(p);
         setPonta(1, lista);
@@ -91,7 +92,6 @@ bool Mesa::colocarPedraNaMesa(Pedra p) {
                 pontasDisponiveis.push_back(i);
             }
         }
-        cout << "Pontas disponiveis: " << pontasDisponiveis.size() << endl;
         // Caso haja mais de uma opção o jogador pode optar em que ponta vai jogar
         if(pontasDisponiveis.size() > 1) {
             cout << "Escolha uma das pontas a seguir para jogar:" << endl;
@@ -99,7 +99,20 @@ bool Mesa::colocarPedraNaMesa(Pedra p) {
                 cout <<  " " << *ponta;
             }
             cout << endl;
-            cin >> pontaEscolhida;
+
+            // Recebimento e verificação da pontaEscolhida pelo jogador
+            while(pontaInvalida) {
+                cin >> pontaEscolhida;
+                for(ponta = pontasDisponiveis.begin(); ponta!=pontasDisponiveis.end(); ponta++) {
+                    if(pontaEscolhida == *ponta) {
+                        pontaInvalida = false;
+                    }
+                }
+                if(pontaInvalida) {
+                    cout << "Ponta inválida, escolha uma das pontas que foram dadas como opção!" << endl;
+                }
+            }
+
             pedraNaPonta = pedraDaPonta(pontaEscolhida);
             if(pedraNaPonta.getNaipe(1)== p.getNaipe(2)) {
                 colocarPedraNaPonta(pontaEscolhida, p);

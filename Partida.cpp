@@ -8,7 +8,7 @@
 #include "Pedra.h"
 #include <string>
 #include <iostream>
-//#include <array>
+#include <array>
 
 using namespace std;
 
@@ -61,7 +61,6 @@ void Partida::mostrarTurno() {
     cout << "Turno: " << turno << ", É a vez do jogador: "<< getJogador(turno).getNome() << endl;
 }
 
-// Verificar se não há repetição das pedras do embaralhamento
 list<Pedra> Partida::criarPedras() {
     list<Pedra> pedras;
     Pedra pedra;
@@ -144,7 +143,7 @@ void Partida::encontrar6x6() {
 
 }
 
-/*bool Partida::temPalavrasReservadas(string nome) {
+bool Partida::temPalavrasReservadas(string nome) {
     array<string,6> palavrasReservadas = {"placar", "jogar", "mesa", "mao", "turno", "ajuda"};
     for(int i=0; i<6; i++) {
         if(nome.find(palavrasReservadas[i]) != -1) {
@@ -152,10 +151,9 @@ void Partida::encontrar6x6() {
         }
     }
     return false;
-}*/
+}
 
 void Partida::iniciar() {
-    // Modo teste, os nomes não estão sendo escolhido pelos usuarios
     string nome1, nome2, nome3, nome4;
     cout << "Insira o nome dos 4 jogadores que jogarão Dominó por Linha de Comando xD" << endl;
     cout << "Exemplo: Pimpão Adelícia Queiroga Timótio" << endl;
@@ -164,8 +162,8 @@ void Partida::iniciar() {
     jogador2.setNome(nome2); 
     jogador3.setNome(nome3); 
     jogador4.setNome(nome4);
-    /*if((!temPalavrasReservadas(nome1)) and (!temPalavrasReservadas(nome2)) and (!temPalavrasReservadas(nome3))
-        and (!temPalavrasReservadas(nome4))) {*/
+    if((!temPalavrasReservadas(nome1)) and (!temPalavrasReservadas(nome2)) and (!temPalavrasReservadas(nome3))
+        and (!temPalavrasReservadas(nome4))) {
         cout << endl << "Partida acaba de iniciar" << endl;
         jogador1.setPontos(0);
         jogador2.setPontos(0);
@@ -177,12 +175,12 @@ void Partida::iniciar() {
         distribuirPedras();
         encontrar6x6();
         inicioComSena = true;
-    /*} else {
+    } else {
         cout << "Nome de algum(ns) jogador(es) utiliza(m) alguma(s) palavra(s) reservada(s)" << endl;
         cout << "placar, jogar, mesa, mao, turno, ajuda são palavras reservadas!" << endl;
         cout << "Partida cancelada!" << endl;
         exit(1);
-    }*/
+    }
     
 }
 
@@ -201,43 +199,53 @@ bool Partida::terminouJogo() {
     pontos2 = jogador2.getPontos();
     pontos3 = jogador3.getPontos();
     pontos4 = jogador4.getPontos();
-    if(pontos1 >= 50) {
+    if(pontos1 >= 100) {
         quantosAtingiramPontuacao++;
     }
-    if(pontos2 >= 50) {
+    if(pontos2 >= 100) {
         quantosAtingiramPontuacao++;
     }
-    if(pontos3 >= 50) {
+    if(pontos3 >= 100) {
         quantosAtingiramPontuacao++;
     }
-    if(pontos4 >= 50) {
+    if(pontos4 >= 100) {
         quantosAtingiramPontuacao++;
     }
     // Se somente um conseguiu terminar jogo, caso contrário verificação se vai ter desempate
     if(quantosAtingiramPontuacao == 1) {
         return true;
-    } else if(pontos1 > pontos2) {
-    // Qual o maior entre os quatro
-        if(pontos1 > pontos3) {
-            if(pontos1 > pontos4) {
-                return true;
-            } else if (pontos4 > pontos1) {
-                return true;
-            }
-        } else if (pontos3 > pontos1) {
-            if(pontos3 > pontos4) {
-                return true;
+    } else if(quantosAtingiramPontuacao > 1) {
+        if(pontos1 > pontos2) {
+        // Qual o maior entre os quatro
+            if(pontos1 > pontos3) {
+                if(pontos1 > pontos4) {
+                    return true;
+                } else if (pontos4 > pontos1) {
+                    return true;
+                }
+            } else if (pontos3 > pontos1) {
+                if(pontos3 > pontos4) {
+                    return true;
+                } else if (pontos4 > pontos3) {
+                    return true;
+                }
             } else if (pontos4 > pontos3) {
                 return true;
             }
-        } else if (pontos4 > pontos3) {
-            return true;
-        }
-    } else if (pontos2 > pontos1) {
-        if(pontos2 > pontos3) {
-            if(pontos2 > pontos4) {
-                return true;
-            } else if (pontos4 > pontos2) {
+        } else if (pontos2 > pontos1) {
+            if(pontos2 > pontos3) {
+                if(pontos2 > pontos4) {
+                    return true;
+                } else if (pontos4 > pontos2) {
+                    return true;
+                }
+            } else if(pontos3 > pontos2) {
+                if(pontos3 > pontos4) {
+                    return true;
+                } else if (pontos4 > pontos3) {
+                    return true;
+                }
+            } else if (pontos4 > pontos3) {
                 return true;
             }
         } else if(pontos3 > pontos2) {
@@ -246,17 +254,9 @@ bool Partida::terminouJogo() {
             } else if (pontos4 > pontos3) {
                 return true;
             }
-        } else if (pontos4 > pontos3) {
+        } else if (pontos4 > pontos2) {
             return true;
         }
-    } else if(pontos3 > pontos2) {
-        if(pontos3 > pontos4) {
-            return true;
-        } else if (pontos4 > pontos3) {
-            return true;
-        }
-    } else if (pontos4 > pontos2) {
-        return true;
     }
     return false;
 }
@@ -275,9 +275,7 @@ int Partida::garagemParaJogador(int index) {
     if(index != 4) {
         garagem += jogador4.garagem();    
     }
-    cout << "garagem total antes: " << garagem << endl;
     for(; garagem%5!=0; garagem--);
-    cout << "garagem total: " << garagem << endl;
     return garagem;
 }
 
@@ -395,7 +393,7 @@ bool Partida::vaiPassar(int index) {
             }
         }
     }
-    cout << jogadorDaVez.getNome() << " não tem pedra, o passe é contado automaticamente" << endl;
+    cout << jogadorDaVez.getNome() << " não tem pedra para jogar, o passe é contado automaticamente" << endl;
     return true;
 }
 
@@ -431,7 +429,7 @@ void Partida::aguardarMovimento(string movimento) {
             pedra.setNaipes((int)(movimento[index+1] - '0'),(int)(movimento[index+3] - '0'));
             if (validarJogada(movimento, pedra)) {
                 mesa.mostrarMesa();
-                // Se o jogador já jogou todas a pedras continua no mesmo turno, caso contrário próximo turno para outro jogar
+                // Se o jogador ainda tiver pedras na mao próximo turno para outro jogar caso contrário, fechar turno
                 if(!(checarMaoDoJogadorEstaVazia(turno))) {
                     turnoAnterior = turno;
                     // Verificação se o jogador vai passar
@@ -482,7 +480,9 @@ void Partida::aguardarMovimento(string movimento) {
                     } while(passar);
                 } else {
                     // fechar turno -> contar garagem
-                    jogadorDaVez.setPontos(garagemParaJogador(turno) + jogadorDaVez.getPontos());
+                    garagem = garagemParaJogador(turno);
+                    cout << jogadorDaVez.getNome() << " ganhou como garagem: " << garagem << " pontos." << endl;
+                    jogadorDaVez.setPontos(garagem + jogadorDaVez.getPontos());
                     setJogador(turno, jogadorDaVez);
                     // verificar pontuação geral se alguem alcançou a pontuação terminar jogo e declarar vencedores
                     if(terminouJogo()) {
@@ -491,6 +491,7 @@ void Partida::aguardarMovimento(string movimento) {
                     // caso contrário começar novo turno
                         distribuirPedras();
                         limparMesa();
+                        jogadorDaVez = getJogador(turno);
                         cout << "Nova rodada!" << endl;
                         // Verifica se o jogador tem carroça para começar uma rodada
                         while(!jogadorDaVez.temCarrocaNaMao()) {
