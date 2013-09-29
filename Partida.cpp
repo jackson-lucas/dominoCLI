@@ -318,7 +318,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            //break;
+            break;
         case 2:
             mao = jogador2.getPedrasNaMao();
             cout << jogador2.getNome() << ": [";
@@ -326,7 +326,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            //break;
+            break;
         case 3:
             mao = jogador3.getPedrasNaMao();
             cout << jogador3.getNome() << ": [";
@@ -334,7 +334,7 @@ void Partida::mostrarMao() {
                 cout << "(" << (*pedra).getNaipe(1) << ", " << (*pedra).getNaipe(2) << ")";
             }
             cout << "]" << endl;
-            //break;
+            break;
         case 4:
             mao = jogador4.getPedrasNaMao();
             cout << jogador4.getNome() << ": [";
