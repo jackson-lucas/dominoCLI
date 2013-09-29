@@ -12,7 +12,7 @@
 
 using namespace std;
 
-int Partida::algoritmo_randomico (int i) { 
+int Partida::algoritmoRandomico (int i) { 
     srand (unsigned(time(0)));
     return rand() % i; 
 }
@@ -66,7 +66,7 @@ list<Pedra> Partida::criarPedras() {
     Pedra pedra;
     int contador=0;
 
-    algoritmo_randomico(6000);
+    algoritmoRandomico(6000);
 
     for(int i = 0; i < 7; i++, contador++) {
         for(int j=0+contador; j < 7; j++) {
@@ -162,6 +162,7 @@ void Partida::iniciar() {
     jogador2.setNome(nome2); 
     jogador3.setNome(nome3); 
     jogador4.setNome(nome4);
+    
     if((!temPalavrasReservadas(nome1)) and (!temPalavrasReservadas(nome2)) and (!temPalavrasReservadas(nome3))
         and (!temPalavrasReservadas(nome4))) {
         cout << endl << "Partida acaba de iniciar" << endl;
@@ -310,7 +311,7 @@ void Partida::finalizar() {
 void Partida::mostrarMao() {
     list<Pedra> mao;
     list<Pedra>::iterator pedra;
-    switch (1) {
+    switch (turno) {
         case 1:
             mao = jogador1.getPedrasNaMao();
             cout << jogador1.getNome() << ": [";
@@ -379,7 +380,7 @@ bool Partida::validarJogada(string movimento, Pedra pedra) {
     return false;
 }
 
-// Verificar se jogador tem pedra ou se passou, pontuação p/ próximo
+// Verificar se jogador tem pedra para jogar ou se passou
 bool Partida::vaiPassar(int index) {
     Jogador jogadorDaVez = getJogador(turno);
     list<Pedra> mao = jogadorDaVez.getPedrasNaMao();
@@ -402,7 +403,7 @@ void Partida::aguardarMovimento(string movimento) {
     bool acabouPartida, passar;
     Pedra pedra;
     Jogador jogadorDaVez = getJogador(turno);
-    // Caso se deseje ver o placar
+
     if(movimento.find("placar") != -1) {
         mostrarPlacar();
         return;
@@ -431,6 +432,7 @@ void Partida::aguardarMovimento(string movimento) {
                 mesa.mostrarMesa();
                 // Se o jogador ainda tiver pedras na mao próximo turno para outro jogar caso contrário, fechar turno
                 if(!(checarMaoDoJogadorEstaVazia(turno))) {
+                    
                     turnoAnterior = turno;
                     // Verificação se o jogador vai passar
                     do {
@@ -478,16 +480,20 @@ void Partida::aguardarMovimento(string movimento) {
                             }
                         }
                     } while(passar);
+
                 } else {
+
                     // fechar turno -> contar garagem
                     garagem = garagemParaJogador(turno);
                     cout << jogadorDaVez.getNome() << " ganhou como garagem: " << garagem << " pontos." << endl;
                     jogadorDaVez.setPontos(garagem + jogadorDaVez.getPontos());
                     setJogador(turno, jogadorDaVez);
+
                     // verificar pontuação geral se alguem alcançou a pontuação terminar jogo e declarar vencedores
                     if(terminouJogo()) {
                         finalizar();
                     } else {
+
                     // caso contrário começar novo turno
                         distribuirPedras();
                         limparMesa();
@@ -500,6 +506,7 @@ void Partida::aguardarMovimento(string movimento) {
                             jogadorDaVez = getJogador(turno);
                         }
                     }
+
                 }
                 mostrarPlacar();
                 return;
@@ -507,5 +514,3 @@ void Partida::aguardarMovimento(string movimento) {
         }
     }
 }
-
-// Garagem contagem errado e finalização do jogo pré-matura

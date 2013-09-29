@@ -15,7 +15,7 @@ class Partida {
     bool inicioComSena;
     int turno;
     Mesa mesa;
-    int algoritmo_randomico (int i);
+    int algoritmoRandomico (int i);
     void setJogador(int index, Jogador p1);
     Jogador getJogador(int index);
     list<Pedra> criarPedras();
